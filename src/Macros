@@ -1,0 +1,69 @@
+#
+# Makefile Macros generated from /home/app/cesm/1_2_2_1/src/scripts/ccsm_utils/Machines/config_compilers.xml using
+# COMPILER=gnu
+# OS=Linux
+# MACH=userdefined
+#
+CPPDEFS+= -DFORTRANUNDERSCORE -DNO_R16 -DLinux -DCPRGNU
+
+SLIBS+=$(shell /usr/bin/nc-config --flibs)
+
+CONFIG_ARGS:=
+
+CXX_LINKER:=FORTRAN
+
+ESMF_LIBDIR:=
+
+FC_AUTO_R8:= -fdefault-real-8
+
+FFLAGS:= -O -fconvert=big-endian -ffree-line-length-none -ffixed-line-length-none -fallow-argument-mismatch -fallow-invalid-boz
+
+FFLAGS_NOOPT:= -O0
+
+FIXEDFLAGS:=  -ffixed-form
+
+FREEFLAGS:= -ffree-form
+
+#LDFLAGS:= -mcmodel=medium -fPIC
+
+MPICC:= mpicc
+
+MPICXX:= mpicxx
+
+MPIFC:= mpif90
+
+MPI_LIB_NAME:= mpi
+
+MPI_PATH:= $(MPIDIR)
+
+NETCDF_DIR:= $(NETCDFDIR)
+
+NETCDF_PATH:= $(NETCDFDIR)
+
+PNETCDF_PATH:= $(PNETCDFDIR)
+
+SCC:= gcc
+
+SCXX:= g++
+
+SFC:= gfortran
+
+SUPPORTS_CXX:=TRUE
+
+ifeq ($(DEBUG), TRUE)
+   FFLAGS += -g -Wall
+endif
+
+ifeq ($(compile_threaded), true)
+   CFLAGS += -fopenmp
+   LDFLAGS += -fopenmp
+   FFLAGS += -fopenmp
+endif
+
+ifeq ($(MODEL), cism)
+   CMAKE_OPTS += -D CISM_GNU=ON
+endif
+
+ifeq ($(MODEL), pop2)
+   CPPDEFS += -D_USE_FLOW_CONTROL
+endif

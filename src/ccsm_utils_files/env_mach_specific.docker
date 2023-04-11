@@ -1,0 +1,21 @@
+#! /bin/csh -f
+
+# -------------------------------------------------------------------------
+# DOCKER
+# Edit this file to add module load or other paths needed for the build
+# and run on the system.  Can also include general env settings for machine.
+# Some samples are below
+# -------------------------------------------------------------------------
+
+#source /opt/modules/default/init/csh
+setenv MPIDISTR openmpi
+setenv MPIDIR /usr
+setenv PNETCDFDIR /usr/local
+
+setenv NETCDFDIR /usr # nc-config --prefix
+setenv LIB_NETCDF /usr/lib64 # nc-config --libdir
+setenv INC_NETCDF /usr/include # nc-config --includedir
+setenv MOD_NETCDF /usr/lib64/gfortran/modules # nc-config --fflags
+setenv DEBUG FALSE
+
+#limit coredumpsize unlimited

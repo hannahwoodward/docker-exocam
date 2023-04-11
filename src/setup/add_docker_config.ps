@@ -1,0 +1,44 @@
+#!/usr/bin/env perl
+
+use strict;
+use warnings;
+
+use XML::LibXML;
+
+my $filepath_config = "$ENV{CCSMROOT}/scripts/ccsm_utils/Machines";
+
+update_config(
+    "${filepath_config}/config_machines.xml",
+    "$ENV{HOME}/setup/_config_machines_docker.xml",
+    "config_machines",
+    "machine"
+);
+
+update_config(
+    "${filepath_config}/config_compilers.xml",
+    "$ENV{HOME}/setup/_config_compilers_docker.xml",
+    "config_compilers",
+    "compiler"
+);
+
+sub update_config {
+    my ($path_config, $path_partial, $node_root, $node_child) = @_; # Unpack arguments
+
+    my $dom_config = XML::LibXML->load_xml(location => $path_config);
+    my $dom_partial = XML::LibXML->load_xml(location => $path_partial);
+    my $node_config_docker = $dom_partial->findnodes("${node_root}/${node_child}")->[0];
+
+    # Append config
+    for my $node ( $dom_config->findnodes("/${node_root}") ) {
+        my @children = $node->childNodes();
+
+        $node->addChild($node_config_docker);
+    }
+
+    # Write to file
+    open my $out, '>', $path_config;
+    binmode $out;
+    $dom_config->toFH($out);
+
+    return;
+}

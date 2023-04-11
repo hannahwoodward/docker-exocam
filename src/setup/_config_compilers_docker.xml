@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config_compilers>
+    <compiler OS="LINUX" COMPILER="gnu" MACH="docker">
+        <ADD_SLIBS>$(shell /usr/bin/nc-config --flibs)</ADD_SLIBS>
+        <ADD_CPPDEFS></ADD_CPPDEFS>
+        <ADD_FFLAGS> -fallow-argument-mismatch -fallow-invalid-boz</ADD_FFLAGS>
+        <!-- <ADD_LDFLAGS> -mcmodel=medium -fPIC</ADD_LDFLAGS> -->
+        <CONFIG_ARGS></CONFIG_ARGS>
+        <ESMF_LIBDIR></ESMF_LIBDIR>
+        <MPI_DIR>$(MPIDIR)</MPI_DIR>
+        <MPI_LIB_NAME>mpi</MPI_LIB_NAME>
+        <MPI_PATH>$(MPIDIR)</MPI_PATH>
+        <NETCDF_PATH>$(NETCDFDIR)</NETCDF_PATH>
+        <PNETCDF_PATH>$(PNETCDFDIR)</PNETCDF_PATH>
+    </compiler>
+</config_compilers>
