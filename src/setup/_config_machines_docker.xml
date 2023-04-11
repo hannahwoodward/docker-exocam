@@ -11,7 +11,7 @@
         <DIN_LOC_ROOT>/home/app/cesm/1_2_2_1/data/input</DIN_LOC_ROOT>
         <!-- NB DIN_LOC_ROOT doesn't like env vars ${CCSMDATA}/input -->
         <DIN_LOC_ROOT_CLMFORC></DIN_LOC_ROOT_CLMFORC>
-        <DOUT_S>FALSE</DOUT_S>
+        <DOUT_S>TRUE</DOUT_S>
         <DOUT_S_ROOT>${CCSMDATA}/output</DOUT_S_ROOT>
         <DOUT_L_MSROOT>${CCSMDATA}/output</DOUT_L_MSROOT>
         <CCSM_BASELINE>${CCSMROOT}</CCSM_BASELINE>
