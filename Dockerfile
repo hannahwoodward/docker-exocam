@@ -21,7 +21,7 @@ RUN dnf install -y gcc gcc-gfortran git nano wget which xz netcdf.x86_64 netcdf-
 ENV PATH=$PATH:/usr/lib64/openmpi/bin
 
 # --- Install CESM1.2 specific dependencies ---
-RUN dnf install -y cmake g++ hostname m4 svn task-spooler 'perl(English)' 'perl(XML::LibXML)' 'perl(FindBin)'
+RUN dnf install -y cmake g++ hostname m4 svn task-spooler 'perl(English)' 'perl(FindBin)' 'perl(File::Copy)' 'perl(Switch)' 'perl(XML::LibXML)'
 RUN wget https://parallel-netcdf.github.io/Release/pnetcdf-1.12.3.tar.gz && \
     tar -xf pnetcdf-1.12.3.tar.gz && \
     cd pnetcdf-1.12.3 && \
