@@ -23,10 +23,10 @@
 docker pull woodwardsh/exocam:latest
 ```
 
-* Run container, noting the mounting of local dirs `{cases,output}` to container `/home/app/cesm/1_2_2_1/data/{cases,output}` for shared storage of model cases & output:
+* Run container, noting the mounting of local dir `shared` to container `/home/app/cesm/1_2_2_1/shared` for shared storage of model cases, input, scratch, and output:
 
 ```
-docker run -it --rm --volume=${PWD}/output:/home/app/cesm/1_2_2_1/data/output --volume=${PWD}/cases:/home/app/cesm/1_2_2_1/data/cases woodwardsh/exocam:latest
+docker run -it --rm --volume=${PWD}/shared:/home/app/cesm/1_2_2_1/shared woodwardsh/exocam:latest
 
 # Options:
 # -it       interactive && TTY (starts shell inside container)
@@ -55,10 +55,10 @@ docker build --build-arg SVN_LOGIN= --build-arg SVN_PW= -t exocam .
 docker build  --build-arg SVN_LOGIN= --build-arg SVN_PW= -t exocam . --progress=plain --no-cache
 ```
 
-* Run locally built container
+* Run locally built container, noting the mounting of local dir `shared` to container `/home/app/cesm/1_2_2_1/shared` for shared storage of model cases, input, scratch, and output:
 
 ```
-docker run -it --rm --volume=${PWD}/output:/home/app/cesm/1_2_2_1/data/output --volume=${PWD}/cases:/home/app/cesm/1_2_2_1/data/cases exocam
+docker run -it --rm --volume=${PWD}/shared:/home/app/cesm/1_2_2_1/shared exocam
 
 # Options:
 # -it       interactive && TTY (starts shell inside container)

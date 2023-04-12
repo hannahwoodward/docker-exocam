@@ -6,14 +6,14 @@
         <COMPILERS>gnu</COMPILERS>
         <MPILIBS>openmpi</MPILIBS>
         <RUNDIR>${CCSMCASES}/${CASE}/run</RUNDIR>
-        <CESMSCRATCHROOT>${CCSMDATA}/scratch</CESMSCRATCHROOT>
+        <CESMSCRATCHROOT>${CCSMSHARED}/scratch</CESMSCRATCHROOT>
         <EXEROOT>${CCSMCASES}/${CASE}/build</EXEROOT>
-        <DIN_LOC_ROOT>/home/app/cesm/1_2_2_1/data/input</DIN_LOC_ROOT>
-        <!-- NB DIN_LOC_ROOT doesn't like env vars ${CCSMDATA}/input -->
+        <DIN_LOC_ROOT>/home/app/cesm/1_2_2_1/shared/input</DIN_LOC_ROOT>
+        <!-- NB DIN_LOC_ROOT doesn't like env vars ${CCSMSHARED}/input -->
         <DIN_LOC_ROOT_CLMFORC></DIN_LOC_ROOT_CLMFORC>
         <DOUT_S>TRUE</DOUT_S>
-        <DOUT_S_ROOT>${CCSMDATA}/output</DOUT_S_ROOT>
-        <DOUT_L_MSROOT>${CCSMDATA}/output</DOUT_L_MSROOT>
+        <DOUT_S_ROOT>${CCSMSHARED}/output</DOUT_S_ROOT>
+        <DOUT_L_MSROOT>${CCSMSHARED}/output</DOUT_L_MSROOT>
         <CCSM_BASELINE>${CCSMROOT}</CCSM_BASELINE>
         <CCSM_CPRNC></CCSM_CPRNC>
         <BATCHQUERY>tsp</BATCHQUERY>

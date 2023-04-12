@@ -6,8 +6,8 @@ ARG SVN_PW
 ENV HOME=/home/app
 ENV MODEL_VERSION=1_2_2_1
 ENV CCSMPATH=${HOME}/cesm/${MODEL_VERSION}
-ENV CCSMCASES=${CCSMPATH}/cases
-ENV CCSMDATA=${CCSMPATH}/data
+ENV CCSMSHARED=${CCSMPATH}/shared
+ENV CCSMCASES=${CCSMSHARED}/cases
 ENV CCSMROOT=${CCSMPATH}/src
 ENV MAX_TASKS_PER_NODE=2
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
@@ -56,9 +56,7 @@ COPY src/ccsm_utils_files/CMake/FindNETCDF.cmake ${CCSMROOT}/scripts/ccsm_utils/
 #    cp ./ExoCAM/cesm1.2.1/ccsm_utils_files/namelist_definition.xml ${CCSMROOT}/models/atm/cam/bld/namelist_files/namelist_definition.xml
 
 # --- Create directories ---
-# TODO: change to CCSMSHARED?
-RUN mkdir -p ${CCSMDATA}/{input,output,scratch} && \
-    mkdir -p ${CCSMCASES}
+RUN mkdir -p ${CCSMSHARED}/{cases,input,output,scratch}
 
 # --- Add "docker" machine/compiler config ---
 COPY src/ccsm_utils_files/mkbatch.docker ${CCSMROOT}/scripts/ccsm_utils/Machines/mkbatch.docker
