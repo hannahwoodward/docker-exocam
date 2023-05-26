@@ -35,6 +35,13 @@ docker run -it --rm --volume=${PWD}/shared:/home/app/cesm/1_2_2_1/shared woodwar
 ```
 
 
+### Podman
+
+```
+podman run -it --rm -v ${PWD}/shared:/home/app/cesm/1_2_1/shared --security-opt label=disable woodwardsh/exocam:latest
+```
+
+
 ## Installation & running via locally built image
 
 
