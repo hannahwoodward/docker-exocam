@@ -5,22 +5,21 @@
         <OS>LINUX</OS>
         <COMPILERS>gnu</COMPILERS>
         <MPILIBS>openmpi</MPILIBS>
-        <RUNDIR>${CCSMCASES}/${CASE}/run</RUNDIR>
-        <CESMSCRATCHROOT>${CCSMSHARED}/scratch</CESMSCRATCHROOT>
-        <EXEROOT>${CCSMCASES}/${CASE}/build</EXEROOT>
-        <DIN_LOC_ROOT>/home/app/cesm/1_2_2_1/shared/input</DIN_LOC_ROOT>
-        <!-- NB DIN_LOC_ROOT doesn't like env vars ${CCSMSHARED}/input -->
+        <RUNDIR>$ENV{CCSMCASES}/${CASE}/run</RUNDIR>
+        <!-- <CESMSCRATCHROOT>${CCSMSHARED}/scratch</CESMSCRATCHROOT> -->
+        <EXEROOT>$ENV{CCSMCASES}/${CASE}/build</EXEROOT>
+        <DIN_LOC_ROOT>$ENV{CCSMSHARED}/input</DIN_LOC_ROOT>
         <DIN_LOC_ROOT_CLMFORC></DIN_LOC_ROOT_CLMFORC>
         <DOUT_S>TRUE</DOUT_S>
-        <DOUT_S_ROOT>${CCSMSHARED}/output</DOUT_S_ROOT>
-        <DOUT_L_MSROOT>${CCSMSHARED}/output</DOUT_L_MSROOT>
-        <CCSM_BASELINE>${CCSMROOT}</CCSM_BASELINE>
-        <CCSM_CPRNC></CCSM_CPRNC>
+        <DOUT_S_ROOT>${CCSMSHARED}/output/${CASE}</DOUT_S_ROOT>
+        <DOUT_L_MSROOT>${CCSMSHARED}/output/${CASE}</DOUT_L_MSROOT>
+        <CCSM_BASELINE>$ENV{CCSMSHARED}/baseline</CCSM_BASELINE>
+        <CCSM_CPRNC>$ENV{CCSMROOT}/tools/cprnc</CCSM_CPRNC>
         <BATCHQUERY>tsp</BATCHQUERY>
         <BATCHSUBMIT>tsp</BATCHSUBMIT>
         <SUPPORTED_BY>hannah@woodward.sh</SUPPORTED_BY>
-        <GMAKE_J>1</GMAKE_J>
-        <MAX_TASKS_PER_NODE>2</MAX_TASKS_PER_NODE>
+        <GMAKE_J>4</GMAKE_J>
+        <MAX_TASKS_PER_NODE>16</MAX_TASKS_PER_NODE>
         <!-- <MAX_TASKS_PER_NODE>${MAX_TASKS_PER_NODE}</MAX_TASKS_PER_NODE> -->
     </machine>
 </config_machines>
