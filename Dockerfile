@@ -50,7 +50,7 @@ RUN cd ${CCSMROOT} && \
     sed -i "s|\\\\\$ENV|&\\\|" scripts/ccsm_utils/Case.template/ConfigCase.pm && \
     sed -i "s|foreach my \$model qw(\(.*\))|foreach my \$model (qw(\1))|" scripts/ccsm_utils/Tools/cesm_setup && \
     sed -i "s|foreach my \$model qw(\(.*\))|foreach my \$model (qw(\1))|" models/drv/bld/build-namelist && \
-    sed -i "305i # Note - \$USER is not in the config_definition.xml file - it is only in the environment\n\$xmlvars{'USER'} = \$ENV{'USER'};\nunshift @INC, \"\$CASEROOT/Tools\";\nrequire XML::Lite;\nrequire SetupTools;\nmy %xmlvars = ();\nSetupTools::getxmlvars(\$CASEROOT, \%xmlvars);\nforeach my \$attr (keys %xmlvars) {\n\t\$xmlvars{\$attr} = SetupTools::expand_env_var(\$xmlvars{\$attr}, \%xmlvars);\n}" models/drv/bld/build-namelist && \
+    sed -i "305i # Note - \$USER is not in the config_definition.xml file - it is only in the environment\n\$xmlvars{'USER'} = \$ENV{'USER'};\nunshift @INC, \"\$CASEROOT/Tools\";\nrequire XML::Lite;\nrequire SetupTools;\nmy %xmlvars = ();\nSetupTools::getxmlvars(\$CASEROOT, \\\%xmlvars);\nforeach my \$attr (keys %xmlvars) {\n\t\$xmlvars{\$attr} = SetupTools::expand_env_var(\$xmlvars{\$attr}, \\\%xmlvars);\n}" models/drv/bld/build-namelist && \
     sed -i "320,327d" models/drv/bld/build-namelist && \
     sed -i "s|\$NETCDF_PATH/include/netcdf.mod|$NETCDF_PATH/lib64/gfortran/modules/netcdf.mod \&\& test ! -f &|" models/utils/pio/configure
 
