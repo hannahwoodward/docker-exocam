@@ -1,6 +1,6 @@
 # ExoCAM (CESM1.2) Docker Image
 
-[Docker](https://www.docker.com/) image to install and run a containerised ExoCAM (CESM1.2) on Fedora.
+[Docker](https://www.docker.com/) image to install and run a containerised [ExoCAM](https://github.com/storyofthewolf/ExoCAM) (CESM1.2) on Fedora.
 
 
 ## Useful links
