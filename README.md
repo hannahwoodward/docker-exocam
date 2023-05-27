@@ -75,6 +75,42 @@ docker run -it --rm --volume=${PWD}/shared:/home/app/cesm/1_2_1/shared exocam
 ```
 
 
+## Usage
+
+* Start docker container via `docker|podman run ...` as above
+* In `MACH="docker"` xml config in `$CCSMROOT/scripts/ccsm_utils/Machines/config_machines.xml`, edit `GMAKE_J` and `MAX_TASKS_PER_NODE` to match your hardware resource
+
+
+### CESM1.2.1 example
+
+* In the container, run:
+
+```
+cd $CCSMROOT/scripts
+./create_newcase -res f45_g37 -compset X -mach docker -case $CCSMCASES/test1
+cd $CCSMCASES/test1
+./cesm_setup
+csh test1.build
+csh test1.run
+```
+
+### ExoCAM example
+
+* In the container, run (see [ExoCAM repo](https://github.com/storyofthewolf/ExoCAM/blob/main/cesm1.2.1/instructions/general_instructions.txt) for more detailed instructions):
+
+```
+cd $CCSMROOT/scripts
+./create_newcase -res f45_f45 -mach docker -compset E2000C4AQI -case $CCSMCASES/exocam-aquaplanet
+cd $CCSMCASES/exocam-aquaplanet
+perl xmlchange CAM_CONFIG_OPTS="-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.n68equiv"
+cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/SourceMods/ .
+cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/namelist_files/* .
+./cesm_setup
+csh test1.build
+csh test1.run
+```
+
+
 ## Testing
 
 * TODO
