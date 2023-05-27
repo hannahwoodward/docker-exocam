@@ -67,7 +67,9 @@ RUN git clone https://github.com/storyofthewolf/ExoCAM.git && \
     cp ExoCAM/cesm1.2.1/ccsm_utils_files/config_compsets.xml ${CCSMROOT}/scripts/ccsm_utils/Case.template && \
     cp ExoCAM/cesm1.2.1/ccsm_utils_files/namelist_definition.xml ${CCSMROOT}/models/atm/cam/bld/namelist_files && \
     find ExoCAM/cesm1.2.1/configs/ -type f -exec sed -i -e "s|/gpfsm/dnb53/etwolf/models|$HOME|" {} \; && \
-    find ExoRT/3dmodels/*/sys_rootdir.F90 -type f -exec sed -i "8i \\\n  ! Machine: docker\n  character(len=256), parameter :: exort_rootdir = '$HOME/ExoRT/'" {} \;
+    find ExoRT/3dmodels/*/sys_rootdir.F90 -type f -exec sed -i "s|[^\!]character| !&|" {} \; && \
+    find ExoRT/3dmodels/*/sys_rootdir.F90 -type f -exec sed -i "8i \\\n  ! Machine: docker\n  character(len=256), parameter :: exort_rootdir = '$HOME/ExoRT/'" {} \; && \
+    sed -i "s|ic_P1bar_L40_zmean_ic.nc|ic_1bar_L40_zmean_ic.nc|" ExoCAM/cesm1.2.1/configs/cam_aqua_fv/namelist_files/user_nl_cam
 
 # --- Create directories ---
 RUN mkdir -p ${CCSMSHARED}/{baseline,cases,input,output,tests}
