@@ -14,7 +14,7 @@
         <DOUT_S_ROOT>${CCSMSHARED}/output/${CASE}</DOUT_S_ROOT>
         <DOUT_L_MSROOT>${CCSMSHARED}/output/${CASE}</DOUT_L_MSROOT>
         <CCSM_BASELINE>$ENV{CCSMSHARED}/baseline</CCSM_BASELINE>
-        <CCSM_CPRNC>$ENV{CCSMROOT}/tools/cprnc</CCSM_CPRNC>
+        <CCSM_CPRNC>$ENV{CCSMROOT}/tools/cprnc/cprnc</CCSM_CPRNC>
         <BATCHQUERY>tsp</BATCHQUERY>
         <BATCHSUBMIT>tsp</BATCHSUBMIT>
         <SUPPORTED_BY>hannah@woodward.sh</SUPPORTED_BY>

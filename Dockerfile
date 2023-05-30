@@ -49,6 +49,7 @@ RUN cd ${CCSMROOT} && \
     sed -i "s|foreach my \$model qw(\(.*\))|foreach my \$model (qw(\1))|" scripts/ccsm_utils/Case.template/ConfigCase.pm && \
     sed -i "s|\\\\\$ENV|&\\\|" scripts/ccsm_utils/Case.template/ConfigCase.pm && \
     sed -i "s|foreach my \$model qw(\(.*\))|foreach my \$model (qw(\1))|" scripts/ccsm_utils/Tools/cesm_setup && \
+    sed -i "s|(defined @date)|(@date)|" scripts/ccsm_utils/Tools/check_exactrestart.pl && \
     sed -i "s|foreach my \$model qw(\(.*\))|foreach my \$model (qw(\1))|" models/drv/bld/build-namelist && \
     sed -i "305i # Note - \$USER is not in the config_definition.xml file - it is only in the environment\n\$xmlvars{'USER'} = \$ENV{'USER'};\nunshift @INC, \"\$CASEROOT/Tools\";\nrequire XML::Lite;\nrequire SetupTools;\nmy %xmlvars = ();\nSetupTools::getxmlvars(\$CASEROOT, \\\%xmlvars);\nforeach my \$attr (keys %xmlvars) {\n\t\$xmlvars{\$attr} = SetupTools::expand_env_var(\$xmlvars{\$attr}, \\\%xmlvars);\n}" models/drv/bld/build-namelist && \
     sed -i "320,327d" models/drv/bld/build-namelist && \
@@ -80,5 +81,10 @@ COPY src/ccsm_utils_files/env_mach_specific.docker ${CCSMROOT}/scripts/ccsm_util
 COPY src/setup/_config_machines_docker.xml setup/_config_machines_docker.xml
 COPY src/setup/_config_compilers_docker.xml setup/_config_compilers_docker.xml
 COPY src/setup/add_docker_config.ps setup/add_docker_config.ps
+
+# --- Finish setup & compile cprnc ---
 RUN perl setup/add_docker_config.ps && \
-    chmod 755 ${CCSMROOT}/scripts/ccsm_utils/Machines/mkbatch.docker
+    chmod 755 ${CCSMROOT}/scripts/ccsm_utils/Machines/mkbatch.docker && \
+    cd ${CCSMROOT}/tools/cprnc && \
+    sed -i "165i OBJS += compare_vars_mod.o" Makefile && \
+    gmake LIB_NETCDF=/usr/lib64 INC_NETCDF=/usr/include NETCDF=/usr USER_FC=gfortran LDFLAGS="-L/usr/lib64 -lnetcdff -lnetcdf" FFLAGS="-c -I/usr/include -I/usr/lib64/gfortran/modules -O -ffree-form -ffree-line-length-none"
