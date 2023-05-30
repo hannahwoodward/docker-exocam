@@ -15,7 +15,7 @@
 
 ## Notes
 
-* For aquaplanets, must add `-fno-range-check` to `FFLAGS` in `Macros` file after running `./cesm_setup`
+* For ExoCAM runs, must add `-fno-range-check` to `FFLAGS` in `Macros` file after running `./cesm_setup`
 
 
 ## Installation & running via published image
@@ -95,7 +95,7 @@ cd $CCSMROOT/scripts
 ./create_newcase -res f45_g37 -compset X -mach docker -case $CCSMCASES/test1
 cd $CCSMCASES/test1
 ./cesm_setup
-csh test1.build
+csh test1.clean_build && csh test1.build
 csh test1.run
 ```
 
@@ -112,7 +112,7 @@ cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/SourceMods/ .
 cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/namelist_files/* .
 ./cesm_setup
 # Add `-fno-range-check` to `FFLAGS` in Macros
-csh exo-aqua.build
+csh exo-aqua.clean_build && csh exo-aqua.build
 csh exo-aqua.run
 ```
 
