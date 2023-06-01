@@ -74,8 +74,14 @@ setenv OMP_NUM_THREADS ${maxthrds}
 # edit job launching
 #===============================================================================
 
+if ( -f ${CASEROOT}/.exocam_config ) then
+    echo "Using ExoCAM config:"
+    cat ${CASEROOT}/.exocam_config
+else
+    echo "No ExoCAM config found"
+endif
+
 #mpiexec -n ${maxtasks} \$EXEROOT/cesm.exe >&! cesm.log.\$LID
-# TODO: add tsp ?
 mpirun -np ${maxtasks} \$EXEROOT/cesm.exe >&! cesm.log.\$LID
 # TODO: add --oversubscribe if maxtasks > MAX_TASKS_PER_NODE
 

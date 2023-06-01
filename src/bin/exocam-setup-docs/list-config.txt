@@ -1,0 +1,15 @@
+-- ExoCAM configurations --
+
+cam_aqua_fv
+  --  aquaplanet, slab ocean, finite volume dynamical core, cam4/5 phys
+
+cam_aqua_se
+  --  aquaplanet, slab ocean, se cubed sphere dynamical core, cam4/5 phys
+
+cam_land_fv
+  --  land planet, finite volume dynamical core dynamical core, cam4/5 phys
+
+cam_mixed_fv
+  --  continents + slab ocean, finite volume dynamical core, cam4/5 phys
+
+Additional configurations can be found in ExoCAM repo, see README fo installation instructions at https://github.com/storyofthewolf/ExoCAM/tree/main/cesm1.2.1/configs --

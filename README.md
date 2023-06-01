@@ -107,9 +107,13 @@ csh test1.run
 cd $CCSMROOT/scripts
 ./create_newcase -res f45_f45 -mach docker -compset E2000C4AQI -case $CCSMCASES/exo-aqua
 cd $CCSMCASES/exo-aqua
-perl xmlchange CAM_CONFIG_OPTS="-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.n68equiv"
-cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/SourceMods/ .
-cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/namelist_files/* .
+
+sh exocam_setup setup -cloud-physics RK -config cam_aqua_fv -radiation-scheme n68equiv
+# NB exocam_setup does the following:
+# perl xmlchange CAM_CONFIG_OPTS="-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.n68equiv"
+# cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/SourceMods/ .
+# cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/namelist_files/* .
+
 ./cesm_setup
 # Add `-fno-range-check` to `FFLAGS` in Macros
 csh exo-aqua.clean_build && csh exo-aqua.build

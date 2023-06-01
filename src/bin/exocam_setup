@@ -1,0 +1,140 @@
+#! /bin/bash
+# Validator: https://www.shellcheck.net/
+shopt -s extglob
+
+list() {
+    case $1 in
+        cloud-physics|config|radiation-scheme)
+            cat "$RUNDIR/exocam-setup-docs/list-$1.txt"
+            ;;
+        *)
+            echo "usage: exocam_setup.sh list config|cloud-physics|radiation-scheme"
+            exit 1
+    esac
+}
+
+save_config() {
+    printf "cloud_physics='$1'\nconfig='$2'\nradiation_scheme='$3'\n" > .exocam_config
+}
+
+setup () {
+    cloud_physics="RK"
+    config=""
+    radiation_scheme=""
+
+    while [ "$#" -gt 0 ] ; do
+        case "$1" in
+            -cloud-physics)
+                cloud_physics="$2"
+                shift
+                ;;
+            -config)
+                config="$2"
+                shift
+                ;;
+            -radiation-scheme)
+                radiation_scheme="$2"
+                shift
+                ;;
+            *)
+                echo "invalid argument: $1"
+                echo "usage: exocam_setup.sh setup -config {config} -cloud-physics {cloud_physics} -radiation-scheme {radiation_scheme}"
+                exit 1
+                ;;
+        esac
+        shift
+    done
+
+    # Validate config
+    configs="cam_aqua_fv|cam_aqua_se|cam_land_fv|cam_mixed_fv"
+    configs_test="@($configs)"
+    case $config in
+        $configs_test)
+            # Valid
+            ;;
+        *)
+            echo "invalid value: $config"
+            echo "select a valid ExoCAM config using -config"
+            exit 1
+    esac
+
+    # Validate radiation_scheme
+    radiation_schemes="n68equiv|n84equiv|n28archean|n42h2o|n28h2o|n35h2o|n68h2o|n42h2o_16gpt|n42h2o_32gpt|n68h2o_16gpt"
+    radiation_schemes_test="@($radiation_schemes)"
+    case $radiation_scheme in
+        $radiation_schemes_test)
+            # Valid
+            ;;
+        "")
+            # Radiation scheme can be left blank if custom cloud physics added
+            if { [ "$cloud_physics" = "RK" ] || [ "$cloud_physics" = "MG" ]; } then
+                echo "invalid value: $radiation_scheme"
+                echo "select a valid radiation scheme using -radiation-scheme"
+                exit 1
+            fi
+            ;;
+        *)
+            echo "invalid value: $radiation_scheme"
+            echo "select a valid radiation scheme using -radiation-scheme"
+            exit 1
+    esac
+
+    cam_config_opts="$cloud_physics"
+    if [ "$cloud_physics" = "RK" ]; then
+      cam_config_opts="-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.$radiation_scheme"
+    elif [ "$cloud_physics" = "MG" ]; then
+      cam_config_opts="-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.$radiation_scheme -chem none -microphys mg1"
+    fi
+
+    echo "setting CAM_CONFIG_OPTS=$cam_config_opts"
+    perl xmlchange CAM_CONFIG_OPTS="$cam_config_opts"
+
+    if [ "$config" == "cam_aqua_se" ]; then
+            echo "setting CAM_DYCORE"
+            perl xmlchange CAM_DYCORE=se
+    elif [ "$config" == "cam_land_fv" ]; then
+            echo "setting LND_DOMAIN_PATH, LND_DOMAIN_FILE, RTM_MODE, ROF_GRID"
+            perl xmlchange LND_DOMAIN_PATH="$HOME"/ExoCAM/cesm1.2.1/initial_files/cam_land_fv
+            perl xmlchange LND_DOMAIN_FILE=domain.lnd.fv4x5_landplanet.nc
+            perl xmlchange RTM_MODE=NULL # turns off river routing
+            perl xmlchange ROF_GRID=null # turns off river routing grid
+    elif [ "$config" == "cam_mixed_fv" ]; then
+            echo "setting RTM_mode"
+            perl xmlchange RTM_MODE=NULL
+    fi
+
+    # Copy over config files
+    echo "copying SourceMods and namelist_files from $config"
+    cp -r ~/ExoCAM/cesm1.2.1/configs/"$config"/SourceMods/ .
+    cp -r ~/ExoCAM/cesm1.2.1/configs/"$config"/namelist_files/* .
+
+    # TODO: NB: for "MG" clouds, might need to uncomment blocks in user_nl_cam
+    # if [ "$cloud_physics" == "MG" ]; then
+    # fi
+
+    echo "saving config to .exocam_config"
+    save_config "$cloud_physics" "$config" "$radiation_scheme"
+}
+
+usage() {
+    cat "$RUNDIR/exocam-setup-docs/usage.txt"
+}
+
+
+RUNDIR=$(dirname -- "$BASH_SOURCE")
+
+case "$1" in
+    list)
+        list "${@:2}"
+        ;;
+    setup)
+        setup "${@:2}"
+        ;;
+    usage)
+        usage
+        ;;
+    *)
+        usage
+        exit 1
+        ;;
+esac

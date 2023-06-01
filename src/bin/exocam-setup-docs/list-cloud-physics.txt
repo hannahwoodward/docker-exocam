@@ -1,0 +1,13 @@
+-- ExoCAM cloud physics --
+
+RK (default)
+  -- cam4 clouds
+  -- CAM_CONFIG_OPTS='-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.{radiation_scheme}'
+
+MG
+  -- cam5 clouds
+  -- CAM_CONFIG_OPTS='-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.{radiation_scheme} -chem none -microphys mg1'
+
+{cam_config_opts}
+  -- set your own CAM_CONFIG_OPTS in place of {cam_config_opts}
+  -- example: CAM_CONFIG_OPTS='-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.{radiation_scheme} -chem none -microphys mg1'

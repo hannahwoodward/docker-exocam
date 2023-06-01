@@ -78,13 +78,16 @@ RUN mkdir -p ${CCSMSHARED}/{baseline,cases,input,output,tests}
 # --- Add "docker" machine/compiler config ---
 COPY src/ccsm_utils_files/mkbatch.docker ${CCSMROOT}/scripts/ccsm_utils/Machines/mkbatch.docker
 COPY src/ccsm_utils_files/env_mach_specific.docker ${CCSMROOT}/scripts/ccsm_utils/Machines/env_mach_specific.docker
-COPY src/setup/_config_machines_docker.xml setup/_config_machines_docker.xml
-COPY src/setup/_config_compilers_docker.xml setup/_config_compilers_docker.xml
-COPY src/setup/add_docker_config.ps setup/add_docker_config.ps
+COPY src/setup/ ${HOME}/setup
+
+# --- Copy over exocam_setup bits & add to path ---
+COPY src/bin/ ${HOME}/bin
+ENV PATH=$PATH:$HOME/bin
 
 # --- Finish setup & compile cprnc ---
 RUN perl setup/add_docker_config.ps && \
     chmod 755 ${CCSMROOT}/scripts/ccsm_utils/Machines/mkbatch.docker && \
+    chmod +x ${HOME}/bin/exocam_setup && \
     cd ${CCSMROOT}/tools/cprnc && \
     sed -i "165i OBJS += compare_vars_mod.o" Makefile && \
     gmake LIB_NETCDF=/usr/lib64 INC_NETCDF=/usr/include NETCDF=/usr USER_FC=gfortran LDFLAGS="-L/usr/lib64 -lnetcdff -lnetcdf" FFLAGS="-c -I/usr/include -I/usr/lib64/gfortran/modules -O -ffree-form -ffree-line-length-none"
