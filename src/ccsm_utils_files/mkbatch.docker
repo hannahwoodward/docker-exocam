@@ -15,7 +15,8 @@ if ( $ntasks % ${MAX_TASKS_PER_NODE} > 0) then
 endif
 @ taskpernode = ${MAX_TASKS_PER_NODE} / ${maxthrds}
 set qname = batch
-set tlimit = "00:59:00"
+set tlimit = "05:59:00"
+## if ($CCSM_ESTCOST > 2) set tlimit = "05:59:00"
 
 #--- Job name is first fifteen characters of case name ---
 set jobname = `echo ${CASE} | cut -c1-15`
@@ -75,10 +76,10 @@ setenv OMP_NUM_THREADS ${maxthrds}
 #===============================================================================
 
 if ( -f ${CASEROOT}/.exocam_config ) then
-    echo "Using ExoCAM config:"
+    echo "- Using ExoCAM config:"
     cat ${CASEROOT}/.exocam_config
 else
-    echo "No ExoCAM config found"
+    echo "- No ExoCAM config found, running as CESM${MODEL_VERSION}"
 endif
 
 #mpiexec -n ${maxtasks} \$EXEROOT/cesm.exe >&! cesm.log.\$LID
