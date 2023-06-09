@@ -12,6 +12,9 @@ ENV CCSMROOT=${CCSMPATH}/src
 ENV MAX_TASKS_PER_NODE=16
 ENV OMPI_ALLOW_RUN_AS_ROOT=1
 ENV OMPI_ALLOW_RUN_AS_ROOT_CONFIRM=1
+# suppress error hwloc/linux: Ignoring PCI device with non-16bit domain.
+# see https://github.com/open-mpi/hwloc/issues/354
+ENV HWLOC_HIDE_ERRORS=2
 WORKDIR ${HOME}
 
 # --- Install dependencies (layer shared with rocke3d image) ---
