@@ -17,7 +17,7 @@ save_config() {
     printf "cloud_physics='$1'\nconfig='$2'\nradiation_scheme='$3'\n" > .exocam_config
 }
 
-setup () {
+setup() {
     cloud_physics="RK"
     config=""
     radiation_scheme=""
@@ -108,12 +108,29 @@ setup () {
     cp -r ~/ExoCAM/cesm1.2.1/configs/"$config"/SourceMods/ .
     cp -r ~/ExoCAM/cesm1.2.1/configs/"$config"/namelist_files/* .
 
-    # TODO: NB: for "MG" clouds, might need to uncomment blocks in user_nl_cam
-    # if [ "$cloud_physics" == "MG" ]; then
-    # fi
+    # For "MG" clouds, need to uncomment ~L41-44 in user_nl_cam
+    # TODO: check if need to comment out L34 (CAM4 eddy_scheme)
+    if [ "$cloud_physics" == "MG" ]; then
+        echo "updating cloud physics in user_nl_cam"
+        sed 's/!\(eddy_scheme\|macrop_scheme\|shallow_scheme\|uwshcu_rpen\)/\1/' user_nl_cam
+    fi
+
+    # Finally, update cesm_setup script to add '-fno-range-check' to FFLAGS in Macros
+    line1='# Add -fno-range-check to FFLAGS in Macros'
+    line2='print \"Setting -fno-range-check in FFLAGS in Macros\$eol\";'
+    line3='system(q{sed -i "s|\\(FFLAGS:=.*\\)\\( -fno-range-check\\)|\\1|" Macros});'
+    line4='system(q{sed -i "s|\\(FFLAGS:=.*\\)|\\1 -fno-range-check|" Macros});'
+    if [ $(grep -ic "$line1" cesm_setup) == 0 ]; then
+        echo "updating cesm_setup to add -fno-range-check to FFLAGS in Macros"
+        sed -i "135i \\\n    $line1\n    $line2\n    $line3\n    $line4\n" cesm_setup
+    fi
 
     echo "saving config to .exocam_config"
     save_config "$cloud_physics" "$config" "$radiation_scheme"
+
+    echo "exocam setup complete."
+    echo "-> update planet/stellar params in ./SourceMods/src.share/exoplanet_mod.F90"
+    echo "-> update initial conditions in user_nl_cam and/or user_docn.streams.txt.som"
 }
 
 usage() {
