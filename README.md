@@ -1,6 +1,8 @@
-# ExoCAM (CESM1.2) Docker Image
+# ExoCAM (CESM1.2.1) Docker Image
 
-[Docker](https://www.docker.com/) image to install and run a containerised [ExoCAM](https://github.com/storyofthewolf/ExoCAM) (CESM1.2) on Fedora.
+[Docker](https://www.docker.com/) image to install and run a containerised [ExoCAM](https://github.com/storyofthewolf/ExoCAM) (CESM1.2.1) on Fedora.
+
+When first using this image, it is recommended to test correct installation before doing any production runs by running the simple CESM1.2.1 and ExoCAM examples under Usage.
 
 
 ## Useful links
@@ -11,11 +13,6 @@
 * [gcc/gfortran docs](https://gcc.gnu.org/onlinedocs/gfortran/index.html#SEC_Contents)
 * [Docker build help](https://docs.docker.com/engine/reference/commandline/build/)
 * [Docker run help](https://docs.docker.com/engine/reference/commandline/run/)
-
-
-## Notes
-
-* For ExoCAM runs, must add `-fno-range-check` to `FFLAGS` in `Macros` file after running `./cesm_setup`
 
 
 ## Installation & running via published image
@@ -109,13 +106,7 @@ cd $CCSMROOT/scripts
 cd $CCSMCASES/exo-aqua
 
 sh exocam_setup setup -cloud-physics RK -config cam_aqua_fv -radiation-scheme n68equiv
-# NB exocam_setup does the following:
-# perl xmlchange CAM_CONFIG_OPTS="-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.n68equiv"
-# cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/SourceMods/ .
-# cp -r ~/ExoCAM/cesm1.2.1/configs/cam_aqua_fv/namelist_files/* .
-
 ./cesm_setup
-# Add `-fno-range-check` to `FFLAGS` in Macros
 csh exo-aqua.clean_build && csh exo-aqua.build
 csh exo-aqua.run
 ```
