@@ -7,10 +7,10 @@ list    list the options for setup args
 
 setup   setup ExoCAM on an existing CESM1.2.1 case
         args:
-          -config={config}
+          -config {config}
             description: select the ExoCAM configuration
             options: cam_aqua_fv|cam_aqua_se|cam_land_fv|cam_mixed_fv
-          -cloud-physics={cloud-physics}
+          -cloud-physics {cloud-physics}
             description: select whether to use CAM4 (RK) or CAM5 (MG)
               physics, or a completely custom cam_config_opts (make sure
               to surround the custom_config_opts in quotes)
@@ -18,7 +18,7 @@ setup   setup ExoCAM on an existing CESM1.2.1 case
             options: RK|MG|{cam_config_opts}
             cam_config_opts example:
               -cloud-physics "-nlev 40 -phys cam4 -usr_src $HOME/ExoRT/3dmodels/src.cam.$radiation_scheme -chem none -microphys mg1"
-          -radiation-scheme={radiation-scheme}
+          -radiation-scheme {radiation-scheme}
             description: select the radiation scheme used by ExoRT.
               Note that this argument is not required if using the
               a custom cam_config_opts for -cloud-physics
