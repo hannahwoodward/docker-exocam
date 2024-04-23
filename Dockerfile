@@ -34,16 +34,23 @@ RUN wget https://parallel-netcdf.github.io/Release/pnetcdf-1.12.3.tar.gz && \
     rm pnetcdf-1.12.3.tar.gz
 
 # --- Download CESM1.2.1 ---
-# NB config_machines/config_compilers.xml is broken, so use ExoCAM ones even if not using ExoCAM
+# Notes:
+# - github has removed svn support, so have to manually download gh externals (https://github.blog/changelog/2024-01-08-subversion-has-been-sunset/)
+# - config_machines/config_compilers.xml is broken, so use ExoCAM ones even if not using ExoCAM
 RUN svn co https://svn-ccsm-models.cgd.ucar.edu/cesm1/release_tags/cesm${MODEL_VERSION} ${CCSMROOT} --trust-server-cert --username ${SVN_LOGIN} --password ${SVN_PW} || true && \
-    cd ${CCSMROOT} && \
-    sed -i "s|http://parallelio.googlecode.com/svn/trunk_tags/pio1_7_2/pio|https://github.com/NCAR/ParallelIO.git/tags/pio1_7_4/pio|" SVN_EXTERNAL_DIRECTORIES && \
-    svn propset svn:externals -F SVN_EXTERNAL_DIRECTORIES . && \
-    cd tools/cprnc && \
-    sed -i "s|http://parallelio.googlecode.com/svn/genf90/trunk_tags/genf90_130402|http://github.com/PARALLELIO/genf90/tags/genf90_130402|" SVN_EXTERNAL_DIRECTORIES && \
-    svn propset svn:externals -F SVN_EXTERNAL_DIRECTORIES . && \
-    cd ../.. && \
-    svn update --trust-server-cert --username ${SVN_LOGIN} --password ${SVN_PW} --non-interactive
+    cd ${CCSMROOT}/models/utils && \
+    wget https://github.com/MCSclimate/MCT/archive/refs/tags/MCT_2.8.3.tar.gz && \
+    tar -xf MCT_2.8.3.tar.gz && \
+    mv MCT-MCT_2.8.3 mct && \
+    wget https://github.com/NCAR/ParallelIO/archive/refs/tags/pio1_7_4.tar.gz && \
+    tar -xf pio1_7_4.tar.gz && \
+    mv ParallelIO-pio1_7_4/pio . && \
+    rm -r MCT_2.8.3.tar.gz ParallelIO-pio1_7_4 pio1_7_4.tar.gz && \
+    cd ${CCSMROOT}/tools/cprnc && \
+    wget https://github.com/PARALLELIO/genf90/archive/refs/tags/genf90_130402.tar.gz && \
+    tar -xf genf90_130402.tar.gz && \
+    mv genf90-genf90_130402 genf90 && \
+    rm -r genf90_130402.tar.gz
 
 # --- Patch CESM ---
 # See https://github.com/storyofthewolf/ExoCAM/blob/main/cesm1.2.1/instructions/computecanada_instructions.txt
