@@ -67,8 +67,8 @@ RUN cd ${CCSMROOT} && \
 
 # --- Clone & install ExoCAM and ExoRT ---
 # Install deps for ExoCAM py_progs
-#RUN dnf install -y pip && \
-#    pip install netcdf scipy
+RUN dnf install -y pip && \
+    /usr/bin/pip install netcdf4 scipy
 
 # Also fix invalid XML caused by double hyphens `--` inside comments
 RUN git clone https://github.com/storyofthewolf/ExoRT.git
