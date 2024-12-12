@@ -5,9 +5,9 @@
         <OS>LINUX</OS>
         <COMPILERS>gnu</COMPILERS>
         <MPILIBS>openmpi</MPILIBS>
-        <RUNDIR>/home/app/cesm/1_2_1/shared/${CASE}/run</RUNDIR>
+        <RUNDIR>/home/app/cesm/1_2_1/shared/cases/${CASE}/run</RUNDIR>
         <!-- <CESMSCRATCHROOT>${CCSMSHARED}/scratch</CESMSCRATCHROOT> -->
-        <EXEROOT>/home/app/cesm/1_2_1/shared/${CASE}/build</EXEROOT>
+        <EXEROOT>/home/app/cesm/1_2_1/shared/cases/${CASE}/build</EXEROOT>
         <DIN_LOC_ROOT>/home/app/cesm/1_2_1/shared/input</DIN_LOC_ROOT>
         <DIN_LOC_ROOT_CLMFORC></DIN_LOC_ROOT_CLMFORC>
         <DOUT_S>TRUE</DOUT_S>
