@@ -83,6 +83,7 @@ RUN git clone https://github.com/storyofthewolf/ExoCAM.git && \
     cp ExoCAM/cesm1.2.1/ccsm_utils_files/namelist_definition.xml ${CCSMROOT}/models/atm/cam/bld/namelist_files && \
     cp ExoCAM/cesm1.2.1/ccsm_utils_files/namelist_definition_docn.xml ${CCSMROOT}/models/ocn/docn/bld/namelist_files && \
     find ExoCAM/cesm1.2.1/configs/ -type f -exec sed -i -e "s|/gpfsm/dnb53/etwolf/models|$HOME|" {} \; && \
+    find ExoCAM/cesm1.2.1/ -type f -exec sed -i -e "s|/discover/nobackup/etwolf/models|$HOME|" {} \; && \
     find ExoRT/3dmodels/*/sys_rootdir.F90 -type f -exec sed -i "s|[^\!]character| !&|" {} \; && \
     find ExoRT/3dmodels/*/sys_rootdir.F90 -type f -exec sed -i "8i \\\n  ! Machine: docker\n  character(len=256), parameter :: exort_rootdir = '$HOME/ExoRT/'" {} \;
 
