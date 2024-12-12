@@ -85,7 +85,9 @@ RUN git clone https://github.com/storyofthewolf/ExoCAM.git && \
     find ExoCAM/cesm1.2.1/configs/ -type f -exec sed -i -e "s|/gpfsm/dnb53/etwolf/models|$HOME|" {} \; && \
     find ExoCAM/cesm1.2.1/ -type f -exec sed -i -e "s|/discover/nobackup/etwolf/models|$HOME|" {} \; && \
     find ExoRT/3dmodels/*/sys_rootdir.F90 -type f -exec sed -i "s|[^\!]character| !&|" {} \; && \
-    find ExoRT/3dmodels/*/sys_rootdir.F90 -type f -exec sed -i "8i \\\n  ! Machine: docker\n  character(len=256), parameter :: exort_rootdir = '$HOME/ExoRT/'" {} \;
+    find ExoRT/3dmodels/*/sys_rootdir.F90 -type f -exec sed -i "8i \\\n  ! Machine: docker\n  character(len=256), parameter :: exort_rootdir = '$HOME/ExoRT/'" {} \; && \
+    sed -i "s|(/'H2O','CO2','CH4','C2H6','O3','O2'/)|(/'H2O ','CO2 ','CH4 ','C2H6','O3  ','O2  '/)|" /home/app/ExoRT/source/src.n68equiv/radgrid.F90 && \
+    sed -i "s|(/'H2O','CO2','CH4','C2H6', 'O3', 'O2'/)|(/'H2O ','CO2 ','CH4 ','C2H6','O3  ','O2  '/)|" /home/app/ExoRT/source/src.n84equiv/radgrid.F90
 
 # --- Create directories ---
 RUN mkdir -p ${CCSMSHARED}/{baseline,cases,input,output,tests}
