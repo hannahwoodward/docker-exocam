@@ -65,7 +65,11 @@ RUN cd ${CCSMROOT} && \
     sed -i "320,327d" models/drv/bld/build-namelist && \
     sed -i "s|\$NETCDF_PATH/include/netcdf.mod|$NETCDF_PATH/lib64/gfortran/modules/netcdf.mod \&\& test ! -f &|" models/utils/pio/configure
 
-# --- Clone ExoCAM and ExoRT & install ---
+# --- Clone & install ExoCAM and ExoRT ---
+# Install deps for ExoCAM py_progs
+#RUN dnf install -y pip && \
+#    pip install netcdf scipy
+
 # Also fix invalid XML caused by double hyphens `--` inside comments
 RUN git clone https://github.com/storyofthewolf/ExoRT.git
 RUN git clone https://github.com/storyofthewolf/ExoCAM.git && \
@@ -101,3 +105,5 @@ RUN perl setup/add_docker_config.ps && \
     cd ${CCSMROOT}/tools/cprnc && \
     sed -i "165i OBJS += compare_vars_mod.o" Makefile && \
     gmake LIB_NETCDF=/usr/lib64 INC_NETCDF=/usr/include NETCDF=/usr USER_FC=gfortran LDFLAGS="-L/usr/lib64 -lnetcdff -lnetcdf" FFLAGS="-c -I/usr/include -I/usr/lib64/gfortran/modules -O -ffree-form -ffree-line-length-none"
+
+CMD ["/bin/bash"]
